@@ -1,0 +1,17 @@
+{
+    "name": "taskmanager",
+    "version": "1.0.0",
+    "private": true,
+    "description": "To do list",
+    "scripts": {
+        "eslint": "eslint src/**/*.js",
+        "test": "npm run eslint",
+        "build": "webpack",
+        "start": "webpack-dev-server --open"
+    },
+    "devDependencies": {
+        "webpack": "5.74.0",
+        "webpack-cli": "4.10.0",
+        "webpack-dev-server": "4.11.1"
+    }
+}
