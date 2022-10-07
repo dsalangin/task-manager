@@ -5,6 +5,8 @@ import {createTaskEditTemplate} from './components/task-edit.js';
 import {createTaskTemplate} from './components/task.js';
 import {createLoadMoreButton} from './components/load-more-button.js';
 
+import {generateTask, generateTasks} from './mock/task';
+import {generateFilters} from './mock/filter';
 
 const renderElement = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
