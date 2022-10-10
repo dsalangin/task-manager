@@ -1,3 +1,5 @@
+import {Color} from '../const';
+
 const DescriptionItems = [
   `Изучить теорию`,
   `Сделать домашку`,
@@ -23,14 +25,6 @@ const Tags = [
   `hard`,
   `easy`,
   `start`
-];
-
-const Color = [
-  `black`,
-  `yellow`,
-  `blue`,
-  `green`,
-  `pink`
 ];
 
 const getRandomIntegerNumber = (min, max) => {
