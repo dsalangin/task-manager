@@ -1,3 +1,9 @@
+const RenederPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREBEGIN: `beforebegin`,
+  BEFOREEND: `beforeend`
+};
+
 const castTimeFormat = (value) => {
   return value < 10 ? `0${value}` : String(value);
 };
@@ -10,4 +16,21 @@ const formatTime = (date) => {
   return `${hours}:${minutes} ${interval}`;
 };
 
-export {formatTime};
+const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+
+const render = (container, element, place) => {
+  switch (place) {
+    case RenederPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenederPosition.BEFOREEND:
+      container.append(element);
+  }
+};
+
+export {formatTime, createElement, render, RenederPosition};

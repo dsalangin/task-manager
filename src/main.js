@@ -1,9 +1,11 @@
-import {createMenuTemplate} from './components/menu.js';
+import SiteMenuComponent from './components/menu.js';
 import {createFilterTemplate} from './components/filter.js';
 import {createBoardTemplate} from './components/board.js';
 import {createTaskEditTemplate} from './components/task-edit.js';
 import {createTaskTemplate} from './components/task.js';
 import {createLoadMoreButton} from './components/load-more-button.js';
+
+import {render, RenederPosition} from './utils';
 
 import {generateTasks} from './mock/task';
 import {generateFilters} from './mock/filter';
@@ -19,7 +21,7 @@ const renderElement = (container, template, place = `beforeend`) => {
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = document.querySelector(`.main__control`);
 
-renderElement(siteHeaderElement, createMenuTemplate());
+render(siteHeaderElement, new SiteMenuComponent().getElement(), RenederPosition.BEFOREEND);
 renderElement(siteMainElement, createFilterTemplate(generateFilters()));
 renderElement(siteMainElement, createBoardTemplate());
 
