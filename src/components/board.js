@@ -1,3 +1,5 @@
+import AbstractComponent from "./abstract-component";
+
 export const createBoardTemplate = () => {
   return (
     `<section class="board container">
@@ -5,3 +7,11 @@ export const createBoardTemplate = () => {
      </section>`
   );
 };
+
+class BoardComponent extends AbstractComponent {
+  getTemplate() {
+    return createBoardTemplate();
+  }
+}
+
+export default BoardComponent;

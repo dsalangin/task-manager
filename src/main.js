@@ -1,6 +1,6 @@
 import SiteMenuComponent from './components/menu.js';
 import FilterComponent from './components/filter.js';
-import {createBoardTemplate} from './components/board.js';
+import BoardComponent from './components/board.js';
 import SortComponent from './components/sort.js';
 import {createTaskEditTemplate} from './components/task-edit.js';
 import {createTaskTemplate} from './components/task.js';
@@ -24,7 +24,7 @@ const siteHeaderElement = document.querySelector(`.main__control`);
 
 render(siteHeaderElement, new SiteMenuComponent().getElement(), RenederPosition.BEFOREEND);
 render(siteMainElement, new FilterComponent(generateFilters()).getElement(), RenederPosition.BEFOREEND);
-renderElement(siteMainElement, createBoardTemplate());
+render(siteMainElement, new BoardComponent().getElement(), RenederPosition.BEFOREEND);
 
 const boardElement = siteMainElement.querySelector(`.board`);
 
