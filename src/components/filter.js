@@ -1,3 +1,5 @@
+import AbstractComponent from './abstract-component';
+
 const createFilterMarkup = (filter, isChecked) => {
   const {title, count} = filter;
   const checked = isChecked ? `cheked` : ``;
@@ -27,4 +29,16 @@ const createFilterTemplate = (filters) => {
   );
 };
 
-export {createFilterTemplate};
+class FilterComponent extends AbstractComponent {
+  constructor(filters) {
+    super();
+
+    this._filters = filters;
+  }
+
+  getTemplate() {
+    return createFilterTemplate(this._filters);
+  }
+}
+
+export default FilterComponent;
