@@ -2,7 +2,7 @@ import SiteMenuComponent from './components/menu.js';
 import FilterComponent from './components/filter.js';
 import BoardComponent from './components/board.js';
 import SortComponent from './components/sort.js';
-import {createTaskEditTemplate} from './components/task-edit.js';
+import TaskEdit from './components/task-edit.js';
 import {createTaskTemplate} from './components/task.js';
 import {createLoadMoreButton} from './components/load-more-button.js';
 
@@ -27,13 +27,12 @@ render(siteMainElement, new FilterComponent(generateFilters()).getElement(), Ren
 render(siteMainElement, new BoardComponent().getElement(), RenederPosition.BEFOREEND);
 
 const boardElement = siteMainElement.querySelector(`.board`);
-
 render(boardElement, new SortComponent().getElement(), RenederPosition.AFTERBEGIN);
 
 const tasks = generateTasks(TASK_COUNT);
 
 const taskListElement = siteMainElement.querySelector(`.board__tasks`);
-renderElement(taskListElement, createTaskEditTemplate(tasks[0]));
+render(taskListElement, new TaskEdit(tasks[0]).getElement(), RenederPosition.AFTERBEGIN);
 
 let showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
 
