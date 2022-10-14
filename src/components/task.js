@@ -1,4 +1,4 @@
-import {MonthNames} from '../const';
+import {MONTH_NAMES} from '../const';
 import {formatTime} from '../utils';
 
 const craeteHashtagMarkup = (tags) => {
@@ -15,7 +15,7 @@ const craeteHashtagMarkup = (tags) => {
 
 export const createTaskTemplate = (task) => {
   const {description, dueDate, tags, color} = task;
-  const date = dueDate ? `${dueDate.getDate()} ${MonthNames[dueDate.getMonth()]}` : ``;
+  const date = dueDate ? `${dueDate.getDate()} ${MONTH_NAMES[dueDate.getMonth()]}` : ``;
   const time = dueDate ? formatTime(dueDate) : ``;
   const hashtagMarkup = craeteHashtagMarkup(tags);
 
