@@ -1,5 +1,6 @@
 import {MONTH_NAMES} from '../const';
 import {formatTime} from '../utils';
+import AbstractComponent from './abstract-component';
 
 const craeteHashtagMarkup = (tags) => {
   return Array.from(tags).map((tag) => {
@@ -13,14 +14,23 @@ const craeteHashtagMarkup = (tags) => {
   }).join(`\n`);
 };
 
-export const createTaskTemplate = (task) => {
-  const {description, dueDate, tags, color} = task;
-  const date = dueDate ? `${dueDate.getDate()} ${MONTH_NAMES[dueDate.getMonth()]}` : ``;
-  const time = dueDate ? formatTime(dueDate) : ``;
+const createTaskTemplate = (task) => {
+  const {description, dueDate, tags, color, repeatingDays} = task;
+
+  const isExpired = dueDate instanceof Date && dueDate < Date.now();
+  const isDateShowing = !!dueDate;
+
+  const date = isDateShowing ? `${dueDate.getDate()} ${MONTH_NAMES[dueDate.getMonth()]}` : ``;
+  const time = isDateShowing ? formatTime(dueDate) : ``;
+
+  const isRepeatingTask = Object.values(repeatingDays).some(Boolean);
+  const repeatClass = isRepeatingTask ? `card--repeat` : ``;
+  const deadlineClass = isExpired ? `card--deadline` : ``;
+
   const hashtagMarkup = craeteHashtagMarkup(tags);
 
   return (
-    `<article class="card card--${color}">
+    `<article class="card card--${color} ${repeatClass} ${deadlineClass}">
       <div class="card__form">
         <div class="card__inner">
           <div class="card__control">
@@ -71,3 +81,21 @@ export const createTaskTemplate = (task) => {
     </article>`
   );
 };
+
+class TaskComponent extends AbstractComponent {
+  constructor(task) {
+    super();
+
+    this._task = task;
+  }
+
+  getTemplate() {
+    return createTaskTemplate(this._task);
+  }
+
+  setEditButtonClickHandler(handler) {
+    this.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, handler);
+  }
+}
+
+export default TaskComponent;
