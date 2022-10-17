@@ -4,7 +4,7 @@ import BoardComponent from './components/board.js';
 import SortComponent from './components/sort.js';
 import TaskEdit from './components/task-edit.js';
 import TaskComponent from './components/task.js';
-import {createLoadMoreButton} from './components/load-more-button.js';
+import LoadMoreButtonComponent from './components/load-more-button.js';
 
 import {render, RenederPosition} from './utils';
 
@@ -38,16 +38,18 @@ let showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
 
 tasks.slice(1, showingTasksCount).map((task) => render(taskListElement, new TaskComponent(task).getElement(), RenederPosition.BEFOREEND));
 
-renderElement(boardElement, createLoadMoreButton());
+const loadMoreButton = new LoadMoreButtonComponent();
+render(boardElement, loadMoreButton.getElement(), RenederPosition.BEFOREEND);
 
-const loadMoreButton = boardElement.querySelector(`.load-more`);
-loadMoreButton.addEventListener(`click`, () => {
+const loadMoreButtonHandler = () => {
   const prevTasksCount = showingTasksCount;
   showingTasksCount = prevTasksCount + SHOWING_TASKS_COUNT_BY_BUTTON;
 
   tasks.slice(prevTasksCount, showingTasksCount).map((task) => render(taskListElement, new TaskComponent(task).getElement(), RenederPosition.BEFOREEND));
 
   if (tasks.length <= showingTasksCount) {
-    loadMoreButton.remove();
+    loadMoreButton.removeElement();
   }
-});
+};
+
+loadMoreButton.setClickHandler(loadMoreButtonHandler);
