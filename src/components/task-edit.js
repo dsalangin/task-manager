@@ -68,8 +68,8 @@ const createTaskEditTemplate = (task) => {
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
   const isDateShowing = !!dueDate;
 
-  const date = dueDate ? `${dueDate.getDate()} ${MONTH_NAMES[dueDate.getMonth()]}` : ``;
-  const time = dueDate ? formatTime(dueDate) : ``;
+  const date = isDateShowing ? `${dueDate.getDate()} ${MONTH_NAMES[dueDate.getMonth()]}` : ``;
+  const time = isDateShowing ? formatTime(dueDate) : ``;
 
   const isRepeatingTask = Object.values(repeatingDays).some(Boolean);
   const repeatClass = isRepeatingTask ? `card--repeat` : ``;
@@ -104,9 +104,7 @@ const createTaskEditTemplate = (task) => {
                 <button class="card__date-deadline-toggle" type="button">
                   date: <span class="card__date-status">${isDateShowing ? `yes` : `no`}</span>
                 </button>
-                ${
-                  isDateShowing ?
-                  `<fieldset class="card__date-deadline">
+                ${ isDateShowing ? `<fieldset class="card__date-deadline">
                     <label class="card__input-deadline-wrap">
                       <input
                         class="card__date"
@@ -116,9 +114,7 @@ const createTaskEditTemplate = (task) => {
                         value="${date} ${time}"
                       />
                     </label>
-                  </fieldset>`
-                  : ``
-                }
+                  </fieldset>` : ``}
                 <button class="card__repeat-toggle" type="button">
                   repeat:<span class="card__repeat-status">${isRepeatingTask ? `yes` : `no`}</span>
                 </button>
