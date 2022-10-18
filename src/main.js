@@ -15,10 +15,6 @@ const TASK_COUNT = 22;
 const SHOWING_TASKS_COUNT_ON_START = 8;
 const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
 
-const renderElement = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
-};
-
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = document.querySelector(`.main__control`);
 
@@ -48,7 +44,7 @@ const loadMoreButtonHandler = () => {
   tasks.slice(prevTasksCount, showingTasksCount).map((task) => render(taskListElement, new TaskComponent(task).getElement(), RenederPosition.BEFOREEND));
 
   if (tasks.length <= showingTasksCount) {
-    loadMoreButton.removeElement();
+    loadMoreButton.getElement().remove();
   }
 };
 
