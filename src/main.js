@@ -6,6 +6,7 @@ import TaskListComponent from './components/task-list';
 import TaskEdit from './components/task-edit.js';
 import TaskComponent from './components/task.js';
 import LoadMoreButtonComponent from './components/load-more-button.js';
+import NoTaskComponent from './components/no-task.js';
 
 import {render, RenederPosition} from './utils';
 
@@ -35,24 +36,38 @@ const taskListElement = siteMainElement.querySelector(`.board__tasks`);
 
 let showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
 
-tasks.slice(0, showingTasksCount).map((task) => {
-  const taskComponent = new TaskComponent(task);
-  const taskEditComponent = new TaskEdit(task);
+if (tasks) {
+  tasks.slice(0, showingTasksCount).map((task) => {
+    const taskComponent = new TaskComponent(task);
+    const taskEditComponent = new TaskEdit(task);
 
-  const replaceCardToForm = () => {
-    taskListComponent.getElement().replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
-  };
+    const onEscKeyDown = (evt) => {
+      if (evt.key === `Escape` || evt.key === `Esc`) {
+        evt.preventDefault();
+        replaceFormToCard(evt);
+        document.removeEventListener(`keydown`, onEscKeyDown);
+      }
+    };
 
-  const replaceFormToCard = (evt) => {
-    evt.preventDefault();
-    taskListComponent.getElement().replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
-  };
+    const replaceCardToForm = () => {
+      taskListComponent.getElement().replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
+      document.addEventListener(`keydown`, onEscKeyDown);
+    };
 
-  taskComponent.setEditButtonClickHandler(replaceCardToForm);
-  taskEditComponent.setSubmitHandler(replaceFormToCard);
+    const replaceFormToCard = (evt) => {
+      evt.preventDefault();
+      taskListComponent.getElement().replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    };
 
-  render(taskListElement, taskComponent.getElement(), RenederPosition.BEFOREEND);
-});
+    taskComponent.setEditButtonClickHandler(replaceCardToForm);
+    taskEditComponent.setSubmitHandler(replaceFormToCard);
+
+    render(taskListElement, taskComponent.getElement(), RenederPosition.BEFOREEND);
+  });
+} else {
+  render(taskListElement, new NoTaskComponent().getElement(), RenederPosition.BEFOREEND);
+}
 
 const loadMoreButton = new LoadMoreButtonComponent();
 render(boardElement, loadMoreButton.getElement(), RenederPosition.BEFOREEND);
@@ -70,3 +85,5 @@ const loadMoreButtonHandler = () => {
 };
 
 loadMoreButton.setClickHandler(loadMoreButtonHandler);
+
+
