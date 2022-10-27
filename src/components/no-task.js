@@ -1,12 +1,10 @@
-import AbstractComponent from "./abstract-component";
+import AbstractComponent from './abstract-component';
 
-const createNoTaskTemplate = () => {
-  return (
-    `<p class="board__no-tasks">
-      Click «ADD NEW TASK» in menu to create your first task
-    </p>`
-  );
-};
+const createNoTaskTemplate = () => (
+  `<p class="board__no-tasks">
+    Click «ADD NEW TASK» in menu to create your first task
+  </p>`
+);
 
 class NoTaskComponent extends AbstractComponent {
   getTemplate() {

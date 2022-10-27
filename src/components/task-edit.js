@@ -1,66 +1,56 @@
 import {COLOR, DAYS, MONTH_NAMES} from '../const';
 import {formatTime} from '../utils/render';
-import AbstractComponent from "./abstract-component";
+import AbstractComponent from './abstract-component';
 
-const createRepeatingDaysMarkup = (days, repeatingDays) => {
-  return days.map((day) => {
-    const isChecked = repeatingDays[day];
-    return (
-      `<input
-        class="visually-hidden card__repeat-day-input"
-        type="checkbox"
-        id="repeat-${day}-4"
-        name="repeat"
-        value=${day}
-        ${isChecked ? `checked` : ``}
+const createRepeatingDaysMarkup = (days, repeatingDays) => days.map((day) => {
+  const isChecked = repeatingDays[day];
+  return (
+    `<input
+      class="visually-hidden card__repeat-day-input"
+      type="checkbox"
+      id="repeat-${day}-4"
+      name="repeat"
+      value=${day}
+      ${isChecked ? 'checked' : ''}
+    />
+    <label class="card__repeat-day" for="repeat-${day}-4"
+      >${day}</label
+    >`
+  );
+}).join('');
+
+const craeteHashtagMarkup = (tags) => Array.from(tags).map((tag) => (
+  `<span class="card__hashtag-inner">
+      <input
+        type="hidden"
+        name="hashtag"
+        value=${tag}
+        class="card__hashtag-hidden-input"
       />
-      <label class="card__repeat-day" for="repeat-${day}-4"
-        >${day}</label
-      >`
-    );
-  }).join(``);
-};
+      <p class="card__hashtag-name">
+        #${tag}
+      </p>
+      <button type="button" class="card__hashtag-delete">
+        delete
+      </button>
+    </span>`
+)).join('');
 
-const craeteHashtagMarkup = (tags) => {
-  return Array.from(tags).map((tag) => {
-    return (
-      `<span class="card__hashtag-inner">
-          <input
-            type="hidden"
-            name="hashtag"
-            value=${tag}
-            class="card__hashtag-hidden-input"
-          />
-          <p class="card__hashtag-name">
-            #${tag}
-          </p>
-          <button type="button" class="card__hashtag-delete">
-            delete
-          </button>
-        </span>`
-    );
-  }).join(``);
-};
-
-const createColorsMarkup = (colors, currentColor) => {
-  return colors.map((color) => {
-    return (
-      `<input
-          type="radio"
-          id="color-${color}-4"
-          class="card__color-input card__color-input--${color} visually-hidden"
-          name="color"
-          value="${color}"
-          ${currentColor === color ? `checked` : ``}
-        />
-        <label
-          for="color-${color}-4"
-          class="card__color card__color--${color}"
-          >${color}black</label
-        >`
-    );
-  }).join(``);
-};
+const createColorsMarkup = (colors, currentColor) => colors.map((color) => (
+  `<input
+      type="radio"
+      id="color-${color}-4"
+      class="card__color-input card__color-input--${color} visually-hidden"
+      name="color"
+      value="${color}"
+      ${currentColor === color ? 'checked' : ''}
+    />
+    <label
+      for="color-${color}-4"
+      class="card__color card__color--${color}"
+      >${color}black</label
+    >`
+)).join('');
 
 const createTaskEditTemplate = (task) => {
   const {color, tags, repeatingDays, description, dueDate} = task;
@@ -68,12 +58,12 @@ const createTaskEditTemplate = (task) => {
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
   const isDateShowing = !!dueDate;
 
-  const date = isDateShowing ? `${dueDate.getDate()} ${MONTH_NAMES[dueDate.getMonth()]}` : ``;
-  const time = isDateShowing ? formatTime(dueDate) : ``;
+  const date = isDateShowing ? `${dueDate.getDate()} ${MONTH_NAMES[dueDate.getMonth()]}` : '';
+  const time = isDateShowing ? formatTime(dueDate) : '';
 
   const isRepeatingTask = Object.values(repeatingDays).some(Boolean);
-  const repeatClass = isRepeatingTask ? `card--repeat` : ``;
-  const deadlineClass = isExpired ? `card--deadline` : ``;
+  const repeatClass = isRepeatingTask ? 'card--repeat' : '';
+  const deadlineClass = isExpired ? 'card--deadline' : '';
 
 
   const colorsMarkup = createColorsMarkup(COLOR, color);
@@ -102,7 +92,7 @@ const createTaskEditTemplate = (task) => {
             <div class="card__details">
               <div class="card__dates">
                 <button class="card__date-deadline-toggle" type="button">
-                  date: <span class="card__date-status">${isDateShowing ? `yes` : `no`}</span>
+                  date: <span class="card__date-status">${isDateShowing ? 'yes' : 'no'}</span>
                 </button>
                 ${ isDateShowing ? `<fieldset class="card__date-deadline">
                     <label class="card__input-deadline-wrap">
@@ -114,13 +104,13 @@ const createTaskEditTemplate = (task) => {
                         value="${date} ${time}"
                       />
                     </label>
-                  </fieldset>` : ``}
+                  </fieldset>` : ''}
                 <button class="card__repeat-toggle" type="button">
-                  repeat:<span class="card__repeat-status">${isRepeatingTask ? `yes` : `no`}</span>
+                  repeat:<span class="card__repeat-status">${isRepeatingTask ? 'yes' : 'no'}</span>
                 </button>
                 <fieldset class="card__repeat-days">
                   <div class="card__repeat-days-inner">
-                    ${isRepeatingTask ? repeatingDaysMarkup : ``}
+                    ${isRepeatingTask ? repeatingDaysMarkup : ''}
                   </div>
                 </fieldset>
               </div>
@@ -167,7 +157,7 @@ class TaskEdit extends AbstractComponent {
   }
 
   setSubmitHandler(handler) {
-    this.getElement().querySelector(`.card__form`).addEventListener(`submit`, handler);
+    this.getElement().querySelector('.card__form').addEventListener('submit', handler);
   }
 }
 

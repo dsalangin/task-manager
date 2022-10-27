@@ -1,8 +1,8 @@
-import AbstractComponent from "./abstract-component";
+import AbstractComponent from './abstract-component';
 
-const createTaskListTemplate = () => {
-  return `<div class="board__tasks"></div>`;
-};
+const createTaskListTemplate = () => (
+  '<div class="board__tasks"></div>'
+);
 
 class TaskListComponent extends AbstractComponent {
   getTemplate() {

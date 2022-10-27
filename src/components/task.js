@@ -2,17 +2,12 @@ import {MONTH_NAMES} from '../const';
 import {formatTime} from '../utils/render';
 import AbstractComponent from './abstract-component';
 
-const craeteHashtagMarkup = (tags) => {
-  return Array.from(tags).map((tag) => {
-    return (
-      `<span class="card__hashtag-inner">
-        <span class="card__hashtag-name">
-          #${tag}
-        </span>
-      </span>`
-    );
-  }).join(`\n`);
-};
+const craeteHashtagMarkup = (tags) => Array.from(tags).map((tag) => (
+  `<span class="card__hashtag-inner">
+    <span class="card__hashtag-name">
+      #${tag}
+    </span>
+  </span>`)).join('\n');
 
 const createTaskTemplate = (task) => {
   const {description, dueDate, tags, color, repeatingDays} = task;
@@ -20,12 +15,12 @@ const createTaskTemplate = (task) => {
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
   const isDateShowing = !!dueDate;
 
-  const date = isDateShowing ? `${dueDate.getDate()} ${MONTH_NAMES[dueDate.getMonth()]}` : ``;
-  const time = isDateShowing ? formatTime(dueDate) : ``;
+  const date = isDateShowing ? `${dueDate.getDate()} ${MONTH_NAMES[dueDate.getMonth()]}` : '';
+  const time = isDateShowing ? formatTime(dueDate) : '';
 
   const isRepeatingTask = Object.values(repeatingDays).some(Boolean);
-  const repeatClass = isRepeatingTask ? `card--repeat` : ``;
-  const deadlineClass = isExpired ? `card--deadline` : ``;
+  const repeatClass = isRepeatingTask ? 'card--repeat' : '';
+  const deadlineClass = isExpired ? 'card--deadline' : '';
 
   const hashtagMarkup = craeteHashtagMarkup(tags);
 
@@ -94,15 +89,15 @@ class TaskComponent extends AbstractComponent {
   }
 
   setEditButtonClickHandler(handler) {
-    this.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, handler);
+    this.getElement().querySelector('.card__btn--edit').addEventListener('click', handler);
   }
 
   setArchiveButtonClickHandler(handler) {
-    this.getElement().querySelector(`.card__btn--archive`).addEventListener(`click`, handler);
+    this.getElement().querySelector('.card__btn--archive').addEventListener('click', handler);
   }
 
-  setArchiveButtonClickHandler(handler) {
-    this.getElement().querySelector(`.card__btn--favorites`).addEventListener(`click`, handler);
+  setFavoritesButtonClickHandler(handler) {
+    this.getElement().querySelector('.card__btn--favorites').addEventListener('click', handler);
   }
 }
 

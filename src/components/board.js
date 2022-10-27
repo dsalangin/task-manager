@@ -1,10 +1,6 @@
-import AbstractComponent from "./abstract-component";
+import AbstractComponent from './abstract-component';
 
-const createBoardTemplate = () => {
-  return (
-    `<section class="board container"></section>`
-  );
-};
+const createBoardTemplate = () => '<section class="board container"></section>';
 
 class BoardComponent extends AbstractComponent {
   getTemplate() {
