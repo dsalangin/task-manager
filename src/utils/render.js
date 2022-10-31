@@ -31,9 +31,13 @@ const render = (container, element, place = RenederPosition.BEFOREEND) => {
   }
 };
 
+const replace = (newElement, oldElement) => {
+  oldElement.parentElement.replaceChild(newElement, oldElement);
+};
+
 const remove = (component) => {
   component.getElement().remove();
   component.removeElement();
 };
 
-export {formatTime, createElement, render, remove, RenederPosition};
+export {formatTime, createElement, render, replace, remove, RenederPosition};

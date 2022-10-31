@@ -10,7 +10,7 @@ const craeteHashtagMarkup = (tags) => Array.from(tags).map((tag) => (
   </span>`)).join('\n');
 
 const createTaskTemplate = (task) => {
-  const {description, dueDate, tags, color, repeatingDays} = task;
+  const {description, dueDate, tags, color, repeatingDays, isArchive, isFavorite} = task;
 
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
   const isDateShowing = !!dueDate;
@@ -21,6 +21,8 @@ const createTaskTemplate = (task) => {
   const isRepeatingTask = Object.values(repeatingDays).some(Boolean);
   const repeatClass = isRepeatingTask ? 'card--repeat' : '';
   const deadlineClass = isExpired ? 'card--deadline' : '';
+  const archiveClass = isArchive ? 'card__btn--disabled' : '';
+  const favoriteClass = isFavorite ? 'card__btn--disabled' : '';
 
   const hashtagMarkup = craeteHashtagMarkup(tags);
 
@@ -32,12 +34,12 @@ const createTaskTemplate = (task) => {
             <button type="button" class="card__btn card__btn--edit">
               edit
             </button>
-            <button type="button" class="card__btn card__btn--archive">
+            <button type="button" class="card__btn card__btn--archive ${archiveClass}">
               archive
             </button>
             <button
               type="button"
-              class="card__btn card__btn--favorites card__btn--disabled"
+              class="card__btn card__btn--favorites ${favoriteClass}"
             >
               favorites
             </button>

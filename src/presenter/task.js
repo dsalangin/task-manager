@@ -1,14 +1,22 @@
 import TaskComponent from '../components/task';
 import TaskEdit from '../components/task-edit';
-import {render} from '../utils/render';
+import {render, replace} from '../utils/render';
+
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING'
+};
+
 
 class TaskPresenter {
   _taskComponent = null;
   _taskEditComponent = null;
+  _task = null;
+  _mode = Mode.DEFAULT;
 
-  constructor(container, onDataChange) {
+  constructor(container, changeData) {
     this._container = container;
-    this._onDataChange = onDataChange;
+    this._changeData = changeData;
   }
 
   _onEscKeyDown = (evt) => {
@@ -30,17 +38,38 @@ class TaskPresenter {
     document.removeEventListener('keydown', this._onEscKeyDown);
   };
 
+  _handleArchiveClick = () => {
+    this._changeData({...this._task, isArchive: !this._task.isArchive});
+  };
+
+  _handleFavoriteClick = () => {
+    this._changeData({...this._task, isFavorite: !this._task.isFavorite});
+  };
+
   renderTask(task) {
-    this._taskComponent = new TaskComponent(task);
-    this._taskEditComponent = new TaskEdit(task);
+    this._task = task;
+
+    const prevTask = this._taskComponent;
+    const prevTaskEdit = this._taskEditComponent;
+
+    this._taskComponent = new TaskComponent(this._task);
+    this._taskEditComponent = new TaskEdit(this._task);
 
     this._taskComponent.setEditButtonClickHandler(this._replaceCardToForm);
-    this._taskComponent.setArchiveButtonClickHandler(this._onDataChange);
-    this._taskComponent.setFavoritesButtonClickHandler(this._onDataChange);
+    this._taskComponent.setArchiveButtonClickHandler(this._handleArchiveClick);
+    this._taskComponent.setFavoritesButtonClickHandler(this._handleFavoriteClick);
     this._taskEditComponent.setSubmitHandler(this._replaceFormToCard);
 
-    render(this._container.getElement(), this._taskComponent.getElement());
+    if(prevTask === null || prevTaskEdit === null) {
+      render(this._container.getElement(), this._taskComponent.getElement());
+      return;
+    }
+
+    if(this._mode === Mode.DEFAULT) {
+      replace(this._taskComponent.getElement(), prevTask.getElement());
+    }
   }
+
 }
 
 export default TaskPresenter;

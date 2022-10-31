@@ -27,6 +27,8 @@ const Tags = [
   'start'
 ];
 
+const generatetId = () => Date.now() + (parseInt(Math.random() * 10000, 10));
+
 const getRandomIntegerNumber = (min, max) => {
   const rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
@@ -56,6 +58,7 @@ const generateTask = () => {
   const dueDate = Math.random() > 0.5 ? null : generateRandomDate();
 
   return {
+    id: generatetId(),
     description: getRandomArrayItem(DescriptionItems),
     dueDate,
     repeatingDays: dueDate ? DefualtRepeatingDays : generateRepeatingDays(),
