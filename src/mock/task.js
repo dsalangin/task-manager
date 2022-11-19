@@ -1,9 +1,9 @@
-import {Color} from '../const';
+import {COLOR} from '../const';
 
 const DescriptionItems = [
-  `Изучить теорию`,
-  `Сделать домашку`,
-  `Пройти интенсив на соточку`
+  'Изучить теорию',
+  'Сделать домашку',
+  'Пройти интенсив на соточку'
 ];
 
 const DefualtRepeatingDays = {
@@ -17,18 +17,20 @@ const DefualtRepeatingDays = {
 };
 
 const Tags = [
-  `homework`,
-  `theory`,
-  `practice`,
-  `intensive`,
-  `keks`,
-  `hard`,
-  `easy`,
-  `start`
+  'homework',
+  'theory',
+  'practice',
+  'intensive',
+  'keks',
+  'hard',
+  'easy',
+  'start'
 ];
 
+const generatetId = () => Date.now() + (parseInt(Math.random() * 10000, 10));
+
 const getRandomIntegerNumber = (min, max) => {
-  let rand = min + Math.random() * (max + 1 - min);
+  const rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
 };
 
@@ -45,33 +47,28 @@ const generateRandomDate = () => {
   return targetDate;
 };
 
-const generateRepeatingDays = () => {
-  return Object.assign({}, DefualtRepeatingDays, {
-    mo: Math.random() > 0.5,
-    tu: true
-  });
-};
+const generateRepeatingDays = () => Object.assign({}, DefualtRepeatingDays, {
+  mo: Math.random() > 0.5,
+  tu: true
+});
 
-const generateTags = (tags) => {
-  return tags.filter(() => Math.random() > 0.5).slice(0, 3);
-};
+const generateTags = (tags) => tags.filter(() => Math.random() > 0.5).slice(0, 3);
 
 const generateTask = () => {
   const dueDate = Math.random() > 0.5 ? null : generateRandomDate();
 
   return {
+    id: generatetId(),
     description: getRandomArrayItem(DescriptionItems),
     dueDate,
     repeatingDays: dueDate ? DefualtRepeatingDays : generateRepeatingDays(),
     tags: new Set(generateTags(Tags)),
-    color: getRandomArrayItem(Color),
+    color: getRandomArrayItem(COLOR),
     isFavorite: Math.random() > 0.5,
     isArchive: Math.random() > 0.5,
   };
 };
 
-const generateTasks = (count) => {
-  return new Array(count).fill(``).map(generateTask);
-};
+const generateTasks = (count) => new Array(count).fill('').map(generateTask);
 
 export {generateTask, generateTasks};

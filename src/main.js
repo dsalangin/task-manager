@@ -1,48 +1,20 @@
-import {createMenuTemplate} from './components/menu.js';
-import {createFilterTemplate} from './components/filter.js';
-import {createBoardTemplate} from './components/board.js';
-import {createTaskEditTemplate} from './components/task-edit.js';
-import {createTaskTemplate} from './components/task.js';
-import {createLoadMoreButton} from './components/load-more-button.js';
-
+import SiteMenuComponent from './components/menu.js';
+import FilterComponent from './components/filter.js';
+import BoardPresenter from './presenter/board';
+import {render} from './utils/render';
 import {generateTasks} from './mock/task';
 import {generateFilters} from './mock/filter';
 
-const TASK_COUNT = 22;
-const SHOWING_TASKS_COUNT_ON_START = 8;
-const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
-
-const renderElement = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
-};
-
-const siteMainElement = document.querySelector(`.main`);
-const siteHeaderElement = document.querySelector(`.main__control`);
-
-renderElement(siteHeaderElement, createMenuTemplate());
-renderElement(siteMainElement, createFilterTemplate(generateFilters()));
-renderElement(siteMainElement, createBoardTemplate());
+const TASK_COUNT = 7;
 
 const tasks = generateTasks(TASK_COUNT);
+const filters = generateFilters();
 
-const taskListElement = siteMainElement.querySelector(`.board__tasks`);
-renderElement(taskListElement, createTaskEditTemplate(tasks[0]));
+const siteMainElement = document.querySelector('.main');
+const siteHeaderElement = document.querySelector('.main__control');
 
-let showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
+render(siteHeaderElement, new SiteMenuComponent().getElement());
+render(siteMainElement, new FilterComponent(filters).getElement());
 
-tasks.slice(1, showingTasksCount).map((task) => renderElement(taskListElement, createTaskTemplate(task)));
-
-const boardElement = siteMainElement.querySelector(`.board`);
-renderElement(boardElement, createLoadMoreButton());
-
-const loadMoreButton = boardElement.querySelector(`.load-more`);
-loadMoreButton.addEventListener(`click`, () => {
-  const prevTasksCount = showingTasksCount;
-  showingTasksCount = prevTasksCount + SHOWING_TASKS_COUNT_BY_BUTTON;
-
-  tasks.slice(prevTasksCount, showingTasksCount).map((task) => renderElement(taskListElement, createTaskTemplate(task)));
-
-  if (tasks.length <= showingTasksCount) {
-    loadMoreButton.remove();
-  }
-});
+const boardPresent = new BoardPresenter(siteMainElement, tasks);
+boardPresent.init();

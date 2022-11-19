@@ -1,38 +1,45 @@
-import {MonthNames} from '../const';
-import {formatTime} from '../utils';
+import {MONTH_NAMES} from '../const';
+import {formatTime} from '../utils/render';
+import AbstractComponent from './abstract-component';
 
-const craeteHashtagMarkup = (tags) => {
-  return Array.from(tags).map((tag) => {
-    return (
-      `<span class="card__hashtag-inner">
-        <span class="card__hashtag-name">
-          #${tag}
-        </span>
-      </span>`
-    );
-  }).join(`\n`);
-};
+const craeteHashtagMarkup = (tags) => Array.from(tags).map((tag) => (
+  `<span class="card__hashtag-inner">
+    <span class="card__hashtag-name">
+      #${tag}
+    </span>
+  </span>`)).join('\n');
 
-export const createTaskTemplate = (task) => {
-  const {description, dueDate, tags, color} = task;
-  const date = dueDate ? `${dueDate.getDate()} ${MonthNames[dueDate.getMonth()]}` : ``;
-  const time = dueDate ? formatTime(dueDate) : ``;
+const createTaskTemplate = (task) => {
+  const {description, dueDate, tags, color, repeatingDays, isArchive, isFavorite} = task;
+
+  const isExpired = dueDate instanceof Date && dueDate < Date.now();
+  const isDateShowing = !!dueDate;
+
+  const date = isDateShowing ? `${dueDate.getDate()} ${MONTH_NAMES[dueDate.getMonth()]}` : '';
+  const time = isDateShowing ? formatTime(dueDate) : '';
+
+  const isRepeatingTask = Object.values(repeatingDays).some(Boolean);
+  const repeatClass = isRepeatingTask ? 'card--repeat' : '';
+  const deadlineClass = isExpired ? 'card--deadline' : '';
+  const archiveClass = isArchive ? 'card__btn--disabled' : '';
+  const favoriteClass = isFavorite ? 'card__btn--disabled' : '';
+
   const hashtagMarkup = craeteHashtagMarkup(tags);
 
   return (
-    `<article class="card card--${color}">
+    `<article class="card card--${color} ${repeatClass} ${deadlineClass}">
       <div class="card__form">
         <div class="card__inner">
           <div class="card__control">
             <button type="button" class="card__btn card__btn--edit">
               edit
             </button>
-            <button type="button" class="card__btn card__btn--archive">
+            <button type="button" class="card__btn card__btn--archive ${archiveClass}">
               archive
             </button>
             <button
               type="button"
-              class="card__btn card__btn--favorites card__btn--disabled"
+              class="card__btn card__btn--favorites ${favoriteClass}"
             >
               favorites
             </button>
@@ -71,3 +78,29 @@ export const createTaskTemplate = (task) => {
     </article>`
   );
 };
+
+class TaskComponent extends AbstractComponent {
+  constructor(task) {
+    super();
+
+    this._task = task;
+  }
+
+  getTemplate() {
+    return createTaskTemplate(this._task);
+  }
+
+  setEditButtonClickHandler(handler) {
+    this.getElement().querySelector('.card__btn--edit').addEventListener('click', handler);
+  }
+
+  setArchiveButtonClickHandler(handler) {
+    this.getElement().querySelector('.card__btn--archive').addEventListener('click', handler);
+  }
+
+  setFavoritesButtonClickHandler(handler) {
+    this.getElement().querySelector('.card__btn--favorites').addEventListener('click', handler);
+  }
+}
+
+export default TaskComponent;

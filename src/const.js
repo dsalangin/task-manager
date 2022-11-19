@@ -1,24 +1,34 @@
-const Color = [
-  `black`,
-  `yellow`,
-  `blue`,
-  `green`,
-  `pink`
+const COLOR = [
+  'black',
+  'yellow',
+  'blue',
+  'green',
+  'pink'
 ];
 
-const MonthNames = [
-  `January`,
-  `Februare`,
-  `March`,
-  `April`,
-  `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`
+const MONTH_NAMES = [
+  'January',
+  'Februare',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
 ];
 
-export {MonthNames, Color};
+const DAYS = [
+  'mo',
+  'tu',
+  'we',
+  'th',
+  'fr',
+  'sa',
+  'su',
+];
+
+export {MONTH_NAMES, COLOR, DAYS};
